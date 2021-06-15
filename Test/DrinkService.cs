@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,8 +10,6 @@ using Test.Models;
 
 namespace Test
 {
-    //1) класс сделать не статическим - сделать его сервисом
-    //2) убрать лишние методы
     public class DrinkService
     {
         private readonly ApplicationContext _context;
@@ -18,20 +17,33 @@ namespace Test
         {
             _context = context;
         }
-        //Task > Task<List<Drink>>
-        public async Task<List<Drink>> GetDrinks()
+        public async Task<ObservableCollection<Drink>> GetDrinksAsync()
         {
-            //минимализирровать создание контекста - прокидывт ь через конструктор
-            return await _context.Drinks
-                .ToListAsync();
+            return new ObservableCollection<Drink>(await _context.Drinks.ToListAsync());
         }
 
-        public async Task DeletetDB(string id)
+        public async Task DeleteDrinkAsync(Drink drink)
         {
             try
             {
-                Drink drink = _context.Drinks.Where(x => x.Id.ToString().Equals(id)).FirstOrDefault();
-                _context.Drinks.Remove(drink);
+                if (_context.Drinks.Contains(drink))
+                {
+                    _context.Drinks.Remove(drink);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public async Task DeleteAllDrinksAsync()
+        {
+            try
+            {
+                List<Drink> drinksRemove = await _context.Drinks.ToListAsync();
+                _context.Drinks.RemoveRange(drinksRemove);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -40,21 +52,7 @@ namespace Test
             }
         }
 
-        public async Task InsertIntoDB(Drink drink)
-        {
-            try
-            {
-                _context.Drinks.Add(new Drink { Name = drink.Name, Amount = drink.Amount, Quantity = drink.Quantity, Volume = drink.Volume});
-                await _context.SaveChangesAsync();
-            }
-
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
-        public async Task  UpdateDB(Drink drink)
+        public async Task  UpdateDbAsync(Drink drink)
         {
             try
             {
@@ -66,6 +64,62 @@ namespace Test
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        public async Task<bool> SaveDbAsync(ObservableCollection<Drink> drinkCollection)
+        {
+            try 
+            {
+                foreach (Drink drink in drinkCollection)
+                {
+                    if (_context.Drinks.Find(drink.Id) == null && !string.IsNullOrEmpty(drink.Name) && drink.Quantity != 0
+                        && drink.Volume != 0m && drink.Amount != 0m)
+                    {
+                        _context.Drinks.Add(drink);
+                    }
+                    else if (string.IsNullOrEmpty(drink.Name) || drink.Quantity == 0
+                        || drink.Volume == Decimal.Zero || drink.Amount == Decimal.Zero)
+                    {
+                        return false;
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+        }
+
+        public List<string> GetFiltredDrinks(ObservableCollection<Drink> drinkCollection)
+        {
+            List<string> drinkSelected = new List<string>(drinkCollection.Select(x => x.Name).Distinct());
+            drinkSelected.Add("Все");
+            return drinkSelected;
+        }
+
+        public List<Drink> GetSearchedDrinks(string search)
+        {
+            List<Drink> drinkSearched = new List<Drink>();
+            bool success = false;
+            decimal numberDec;
+            search = search.Contains(".") ? search.Replace('.', ',') : search;
+            success = Decimal.TryParse(search, out numberDec);
+
+            if (success)
+            {
+                drinkSearched = _context.Drinks.ToList().Where(x => x.Volume == Convert.ToDecimal(numberDec) || x.Amount == Convert.ToDecimal(numberDec) || x.Quantity == Convert.ToDecimal(numberDec)).ToList();
+            }
+
+            if (!success)
+            {
+                drinkSearched = _context.Drinks.ToList().Where(x => x.Name.ToLower().Contains(search.ToLower())).ToList();
+            }
+            return drinkSearched;
         }
     }
 }
