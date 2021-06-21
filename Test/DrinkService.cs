@@ -94,32 +94,5 @@ namespace Test
                 return false;
             }
         }
-
-        public List<string> GetFiltredDrinks(ObservableCollection<Drink> drinkCollection)
-        {
-            List<string> drinkSelected = new List<string>(drinkCollection.Select(x => x.Name).Distinct());
-            drinkSelected.Add("Все");
-            return drinkSelected;
-        }
-
-        public List<Drink> GetSearchedDrinks(string search)
-        {
-            List<Drink> drinkSearched = new List<Drink>();
-            bool success = false;
-            decimal numberDec;
-            search = search.Contains(".") ? search.Replace('.', ',') : search;
-            success = Decimal.TryParse(search, out numberDec);
-
-            if (success)
-            {
-                drinkSearched = _context.Drinks.ToList().Where(x => x.Volume == Convert.ToDecimal(numberDec) || x.Amount == Convert.ToDecimal(numberDec) || x.Quantity == Convert.ToDecimal(numberDec)).ToList();
-            }
-
-            if (!success)
-            {
-                drinkSearched = _context.Drinks.ToList().Where(x => x.Name.ToLower().Contains(search.ToLower())).ToList();
-            }
-            return drinkSearched;
-        }
     }
 }

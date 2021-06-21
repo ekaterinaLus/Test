@@ -30,9 +30,7 @@ namespace Test
         {
             if (e.Column.Header.Equals("Объем") || e.Column.Header.Equals("Цена")) 
             {
-                Regex reg = new Regex(@"^[0-9][0-9\.]+\d$");
-                Match match = reg.Match(((TextBox)e.EditingElement).Text);
-                if (string.IsNullOrEmpty(match.Value) && !((TextBox)e.EditingElement).Text.Equals("0"))
+                if (!((TextBox)e.EditingElement).Text.CheckForDecimal() && !((TextBox)e.EditingElement).Text.Equals("0"))
                 {
                     e.Cancel = true;
                     ((TextBox)e.EditingElement).Text = "0";
@@ -41,9 +39,7 @@ namespace Test
             }
             if (e.Column.Header.Equals("Количество"))
             {
-                Regex reg = new Regex(@"(?<![-.])\b[0-9]+\b(?!\.[0-9])");
-                Match match = reg.Match(((TextBox)e.EditingElement).Text);
-                if (string.IsNullOrEmpty(match.Value))
+                if (!((TextBox)e.EditingElement).Text.CheckForInt())
                 {
                     e.Cancel = true;
                     ((TextBox)e.EditingElement).Text = "0";
@@ -55,17 +51,18 @@ namespace Test
         private async void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             dataGrid1.ItemsSource = await _service.GetDrinksAsync();
+            InstallFilter();
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            drinkCollection = (ObservableCollection<Drink>)dataGrid1.Items.SourceCollection;
             bool saveSuccess = await _service.SaveDbAsync(drinkCollection);
+
             if (saveSuccess)
             {
                 MessageBox.Show("Данные сохранены");
-                List<string> drinkSelected = _service.GetFiltredDrinks(drinkCollection);
-                drinkFilter.ItemsSource = drinkSelected;
-                drinkFilter.SelectedItem = drinkSelected[drinkSelected.Count - 1];
+                InstallFilter();
             }
             else
             {
@@ -108,9 +105,7 @@ namespace Test
             }
             dataGrid1.ItemsSource = drinkRemove;
             drinkCollection = drinkRemove;
-            List<string> drinkSelected = _service.GetFiltredDrinks(drinkCollection);
-            drinkFilter.ItemsSource = drinkSelected;
-            drinkFilter.SelectedItem = drinkSelected[drinkSelected.Count - 1];
+            InstallFilter();
         }
 
         private async void CutRowButton_Click(object sender, RoutedEventArgs e)
@@ -156,17 +151,32 @@ namespace Test
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            dataGrid1.ItemsSource = _service.GetSearchedDrinks(searchFilter.Text);
+            DataGridColumn column = dataGrid1.Columns.Where(x => x.Header.Equals(searchFilter.SelectedItem.ToString())).FirstOrDefault();
+            dataGrid1.ItemsSource = _context.GetSearchedDrinks(column.SortMemberPath, textboxSearch.Text);
         }
 
         private async void ActiveFilter(object sender, RoutedEventArgs e)
         {
             drinkCollection = await _service.GetDrinksAsync();
 
-            if (drinkFilter.SelectedItem != null)
+            if (drinkFilter.SelectedItem != null && amountFilter.SelectedItem != null)
             {
-                dataGrid1.ItemsSource = drinkFilter.SelectedItem.Equals("Все") ?  drinkCollection.ToList() : drinkCollection.ToList().FindAll(x => x.Name.Equals(drinkFilter.SelectedItem));
+                dataGrid1.ItemsSource = drinkCollection.
+                    GetFiltredResult(drinkFilter.SelectedItem.ToString(), amountFilter.SelectedItem.ToString());
             }
+        }
+
+        public void InstallFilter()
+        {
+            List<string> drinkSelected = drinkCollection.GetFiltredDrinks();
+            List<string> amountSelected = drinkCollection.GetFiltredAmount();
+            List<string> searchSelected = dataGrid1.Columns.Select(x => x.Header.ToString()).ToList();
+            drinkFilter.ItemsSource = drinkSelected;
+            drinkFilter.SelectedItem = drinkSelected[drinkSelected.Count - 1];
+            amountFilter.ItemsSource = amountSelected;
+            amountFilter.SelectedItem = amountSelected[amountSelected.Count - 1];
+            searchFilter.ItemsSource = searchSelected;
+            searchFilter.SelectedItem = searchSelected[0];
         }
 
         private async void dataGrid1_Loaded(object sender, RoutedEventArgs e)
@@ -176,9 +186,13 @@ namespace Test
             drinkCollection = await _service.GetDrinksAsync();
             dataGrid1.ItemsSource = drinkCollection;
             dataGrid1.MakeWindowStyle();
-            List<string> drinkSelected = _service.GetFiltredDrinks(drinkCollection);
-            drinkFilter.ItemsSource = drinkSelected;
-            drinkFilter.SelectedItem = drinkSelected[drinkSelected.Count - 1];
+            InstallFilter();
+
+            /*_context.Drinks.Add(new Drink { Id = 1, Name = "Coca-Cola", Amount = 33.1m, Quantity = 1, Volume = 0.5m });
+            _context.Drinks.Add(new Drink { Id = 2, Name = "Fanta", Amount = 1.2m, Quantity = 13, Volume = 1.2m });
+            _context.Drinks.Add(new Drink { Id = 3, Name = "Yupi", Amount = 47.6m, Quantity = 51, Volume = 0.5m });
+            _context.Drinks.Add(new Drink { Id = 4, Name = "KateDrink", Amount = 47.3m, Quantity = 51, Volume = 0.5m });
+            _context.SaveChanges();*/
         }
 
         private void dataGrid1_Unloaded(object sender, RoutedEventArgs e)

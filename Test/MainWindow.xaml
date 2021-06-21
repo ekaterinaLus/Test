@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="Проверка" Height="548" Width="719">
-    <Grid Margin="20,10,-3,10">
+        Title="Проверка" Height="645" Width="735">
+    <Grid Margin="20,10,30,10">
         <Grid.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Копировать" Click="CopyRowButton_Click"></MenuItem>
@@ -32,24 +32,25 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="0*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="11*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="21*"/>
+            <RowDefinition Height="47*"/>
+            <RowDefinition Height="11*"/>
             <RowDefinition Height="25*"/>
-            <RowDefinition Height="18*"/>
-            <RowDefinition Height="41*"/>
-            <RowDefinition Height="32*"/>
-            <RowDefinition Height="23*"/>
-            <RowDefinition Height="104*"/>
-            <RowDefinition Height="44*"/>
-            <RowDefinition Height="55*"/>
-            <RowDefinition Height="107*"/>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="18*"/>
+            <RowDefinition Height="26*"/>
+            <RowDefinition Height="119*"/>
+            <RowDefinition Height="51*"/>
+            <RowDefinition Height="63*"/>
+            <RowDefinition Height="123*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="21*"/>
         </Grid.RowDefinitions>
-        <DataGrid Name="dataGrid1" CellEditEnding="dataGrid_PreviewCellEditing"
+        <DataGrid Name="dataGrid1" RowHeaderWidth="0" CanUserResizeRows="True" Width="664" HorizontalContentAlignment="Stretch" CellEditEnding="dataGrid_PreviewCellEditing"
               AutoGenerateColumns="False"
-              Style="{DynamicResource DataGridStyle1}" Grid.RowSpan="7" Loaded="dataGrid1_Loaded" Unloaded="dataGrid1_Unloaded"
-                  RowBackground="AliceBlue" AlternatingRowBackground="White" Margin="0,10,54,22" Grid.ColumnSpan="5" Grid.Row="5">
+              Style="{DynamicResource DataGridStyle1}" Grid.RowSpan="8" Loaded="dataGrid1_Loaded" Unloaded="dataGrid1_Unloaded"
+                  RowBackground="LightGray" AlternatingRowBackground="White" Margin="-1,44,54,4" Grid.ColumnSpan="4" Grid.Row="5" Grid.Column="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Наименование" 
                                 Binding="{Binding Name}">
@@ -59,9 +60,10 @@
                             <Setter Property="Foreground" Value="Azure"/>
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
                             <Setter Property="MinWidth" Value="226"/>
-                            <Setter Property="MaxWidth" Value="626"/>
-                            <Setter Property="MinHeight" Value="26"/>
-                            <Setter Property="MaxHeight" Value="426"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="BorderThickness" Value="1 1 0 1" />
                         </Style>
                     </DataGridColumn.HeaderStyle>
                 </DataGridTextColumn>
@@ -73,8 +75,11 @@
                             <Setter Property="Background" Value="Gray"/>
                             <Setter Property="Foreground" Value="Azure"/>
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                            <Setter Property="Width" Value="145"/>
+                            <Setter Property="MinWidth" Value="145"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                             <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="BorderThickness" Value="1 1 0 1" />
                         </Style>
                     </DataGridColumn.HeaderStyle>
                 </DataGridTextColumn>
@@ -86,7 +91,11 @@
                             <Setter Property="Background" Value="Gray"/>
                             <Setter Property="Foreground" Value="Azure"/>
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                            <Setter Property="Width" Value="145"/>
+                            <Setter Property="MinWidth" Value="145"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="BorderThickness" Value="1 1 0 1" />
                         </Style>
                     </DataGridColumn.HeaderStyle>
                 </DataGridTextColumn>
@@ -98,31 +107,38 @@
                             <Setter Property="Background" Value="Gray"/>
                             <Setter Property="Foreground" Value="Azure"/>
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                            <Setter Property="Width" Value="145"/>
+                            <Setter Property="MinWidth" Value="146"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                            <Setter Property="BorderBrush" Value="Black"/>
+                            <Setter Property="BorderThickness" Value="1 1 1 1" />
                         </Style>
                     </DataGridColumn.HeaderStyle>
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Column="4" HorizontalAlignment="Left" Margin="257,3,0,0" Orientation="Vertical" Grid.RowSpan="2" VerticalAlignment="Top"/>
-        <Label Content="Фильтровать:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="3" Height="29" Grid.Row="2" RenderTransformOrigin="0.484,0.902" Width="88"/>
+        <Label Content="Фильтровать:" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="3" Height="29" Grid.Row="2" RenderTransformOrigin="0.484,0.902" Width="83"/>
         <Label Content="" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Grid.ColumnSpan="3" Grid.Row="1" Height="62" Grid.RowSpan="4"/>
-        <ComboBox x:Name="drinkFilter" HorizontalAlignment="Left" Margin="88,5,0,0" VerticalAlignment="Top" Width="214" Grid.ColumnSpan="2" Grid.Column="2" Height="23" Grid.Row="1" Grid.RowSpan="3"/>
+        <ComboBox x:Name="drinkFilter" HorizontalAlignment="Left" Margin="88,6,0,0" VerticalAlignment="Top" Width="214" Grid.ColumnSpan="2" Grid.Column="2" Height="25" Grid.Row="1" Grid.RowSpan="3"/>
         <Label Content="Поиск:" HorizontalAlignment="Left" Margin="170,0,0,0" VerticalAlignment="Center" Grid.Column="3" Grid.Row="1"/>
-        <TextBox x:Name="nameFilter" Height="23" Margin="105,25,134,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Column="3" Grid.RowSpan="3" Grid.Row="3"/>
-        <Button Content="Применить фильтр" Click="ActiveFilter" Margin="88,15,112,0" Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Row="3"/>
-        <Button Content="Сохранить" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="34" Click="SaveButton_Click" RenderTransformOrigin="-6.044,10.504" Margin="47,0,0,12" Grid.Row="11"  MinWidth="205" MaxWidth="605" Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="3" Width="214"/>
-        <Button Content="Обновить" VerticalAlignment="Bottom" Height="34" Click="UpdateButton_Click" Margin="0,0,207,12" Grid.Row="11" Grid.ColumnSpan="4" Grid.RowSpan="3"/>
-        <Button Content="Очистить всё" VerticalAlignment="Bottom" Height="34" Grid.Column="4" Margin="37,0,54,12" Grid.Row="11" Click="DeleteAllButton_Click" Grid.RowSpan="3"/>
-        <TextBox x:Name="searchFilter" Grid.Column="4" HorizontalAlignment="Left" Margin="18,5,0,0" Grid.RowSpan="3" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="232" Height="23" TextChanged="TextBox_TextChanged">
+        <TextBox x:Name="nameFilter" Height="23" Margin="105,25,134,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Grid.Column="3" Grid.RowSpan="2" Grid.Row="3"/>
+        <Button Content="Применить фильтр" Click="ActiveFilter" Margin="88,0,112,12" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="5"/>
+        <Button Content="Сохранить" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="34" Click="SaveButton_Click" RenderTransformOrigin="-6.044,10.504" Margin="47,0,0,12" Grid.Row="13"  MinWidth="205" MaxWidth="605" Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="2" Width="214"/>
+        <Button Content="Обновить" VerticalAlignment="Bottom" Height="34" Click="UpdateButton_Click" Margin="0,0,207,12" Grid.Row="13" Grid.ColumnSpan="4" Grid.RowSpan="2"/>
+        <Button Content="Очистить всё" VerticalAlignment="Bottom" Height="34" Grid.Column="4" Margin="37,0,54,12" Grid.Row="13" Click="DeleteAllButton_Click" Grid.RowSpan="2"/>
+        <TextBox x:Name="textboxSearch" Grid.Column="4" HorizontalAlignment="Left" Margin="18,16,0,0" Grid.RowSpan="2" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Width="232" Height="23" TextChanged="TextBox_TextChanged">
             <TextBox.ToolTip>
                 <ToolTip>
                     Введите название, цену, количество или объем
                 </ToolTip>
             </TextBox.ToolTip>
-            </TextBox>
-                <Label Content="Поиск:" Grid.Column="3" HorizontalAlignment="Left" Margin="201,1,0,0" Grid.Row="1" VerticalAlignment="Top" Width="51" Grid.RowSpan="3" Height="25" Grid.ColumnSpan="2"/>
-        <Button Content="Начать поиск" Grid.Column="4" HorizontalAlignment="Left" Margin="18,15,0,0" Grid.Row="3" Grid.RowSpan="2" Click="SearchButton_Click" Width="232" />
+        </TextBox>
+        <Label Content="Поиск:" Grid.Column="3" HorizontalAlignment="Left" Margin="201,15,0,0" Grid.Row="3" VerticalAlignment="Top" Width="51" Grid.RowSpan="2" Height="25" Grid.ColumnSpan="2"/>
+        <Button Content="Начать поиск" Grid.Column="4" HorizontalAlignment="Left" Margin="18,20,0,12" Grid.Row="4" Grid.RowSpan="2" Click="SearchButton_Click" Width="232" />
+        <ComboBox x:Name="amountFilter" Grid.ColumnSpan="4" HorizontalAlignment="Left" Margin="88,17,0,0" Grid.Row="3" VerticalAlignment="Top" Width="214" Height="23" Grid.RowSpan="2"/>
+        <ComboBox x:Name="searchFilter" Grid.Column="4" HorizontalAlignment="Left" Margin="18,6,0,21" Width="232" Grid.RowSpan="4"/>
+        <Label Content="Критерии поиска:" Grid.Column="3" HorizontalAlignment="Left" Margin="141,0,0,0" VerticalAlignment="Center" Height="29" Grid.Row="2" Width="120" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
     

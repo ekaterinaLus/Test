@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Syncfusion.WinForms.DataGrid.Styles;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -14,7 +15,6 @@ namespace Test
             Style buttonStyle = new Style();
             buttonStyle.Setters.Add(new Setter { Property = Control.FontFamilyProperty, Value = new FontFamily("Verdana") });
             buttonStyle.Setters.Add(new Setter { Property = Control.HorizontalAlignmentProperty, Value = HorizontalAlignment.Center });
-            buttonStyle.Setters.Add(new Setter { Property = Control.ForegroundProperty, Value = new SolidColorBrush(Colors.DarkViolet) });
             dataGrid1.Style = buttonStyle;
         }
     }
